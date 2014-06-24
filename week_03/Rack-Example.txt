@@ -1,0 +1,77 @@
+require 'rack'
+
+class Hello
+
+  def call(env)
+    content = %Q{
+      <h1>Hello</h1>
+      <form method="POST" action="/process">
+        <label for="name">Name:</label>
+        <input id="name" name="name">
+        <input type="submit" value="click me">
+      </form>
+    }
+
+    [200, {"Content-type" => "text/html"}, [content] ]
+
+  end
+
+end
+
+class About
+  def call(env)
+    content = "<h1>About</h1>"
+    [200, {"Content-type" => "text/html"}, [content] ]
+  end
+end
+
+
+class Processor
+  def self.call(env)
+
+    # Get access to the client request
+    request = Rack::Request.new(env)
+
+    # Get access to the data they sent in the POSTed form
+    person_name = request.POST["name"]
+
+    # build the content string
+    content = "You entered #{person_name}"
+
+    # output the response
+    [200, {"Content-type" => "text/html"}, [content] ]
+  end
+
+end
+
+# This is a rack application
+app = Rack::Builder.new do
+
+  map "/" do
+    run Hello.new
+  end
+
+  map "/about.aspx" do
+    run About.new
+  end
+
+  map "/process" do
+    run Processor
+  end
+
+  map "/special" do
+    app = lambda do |env|
+      content = "This is special!"
+      [200, {"Content-type" => "text/html"}, [content] ]
+    end
+
+    run app
+
+  end
+
+end
+
+
+# This is what builds a web server
+server = Rack::Server.new :app => app, :server => "webrick"
+server.start﻿
