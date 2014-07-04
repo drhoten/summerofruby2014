@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en-­‐US">
+    <head>
+      <meta charset="utf-­‐8">
+      <title><%= @title %></title>
+    </head>
+    <body>
+        <header>
+          <h1>Learning about external templates</h1>
+        </header>
+        <section class="main">
+          <%= yield %>
+        </section>
+        <footer>Copyright <%= Date.today.year %> Dougy Fresh</footer>
+    </body>
+</html>

@@ -1,0 +1,24 @@
+<% if @tablerows.count > 0 %>
+    <table>
+      <tr>
+        <th align="left">Name</th>
+        <th align="left">URL</th>
+        <th align="left">Description</th>
+      </tr>
+      <%= @tablerows.join %>
+    </table>
+<% else %>
+    <p/>There are no links. Please add some.</p>
+<% end %>
+
+<% if @show_form %>
+    <fieldset>
+      <legend>Add link</legend>
+      <form action="/links" method="POST">
+        <label>Name: <input type="text" name="name"></label>
+        <label>URL: <input type="url" name="url"></label>
+        <label>Description: <input type="text" name="description"></label>
+        <input type="submit" name="Add">
+      </form>
+    </fieldset>
+<% end %>
